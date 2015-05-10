@@ -21,7 +21,7 @@ public class RealmCache {
         return paths[0]
     }
 
-    init(name: String = defaultCacheName) {
+    public init(name: String = defaultCacheName) {
         self.name = name + ".realm"
         self.realm = Realm(path: RealmCache.cachesDirectory() + name)
     }
@@ -30,7 +30,7 @@ public class RealmCache {
         realm.invalidate()
     }
 
-    func objectForKey(key: String) -> AnyObject? {
+    public func objectForKey(key: String) -> AnyObject? {
         if let cacheObject = realm.objectForPrimaryKey(CacheObject.self, key: key) {
             if expired(cacheObject) {
                 removeObjectForKey(key)
@@ -42,7 +42,7 @@ public class RealmCache {
         return nil
     }
 
-    func setObject(obj: NSSecureCoding, forKey key: String, expiresIn: NSTimeInterval = 0) {
+    public func setObject(obj: NSSecureCoding, forKey key: String, expiresIn: NSTimeInterval = 0) {
         realm.write { [unowned self] in
             let cacheObject = CacheObject()
             cacheObject.key = key
@@ -53,7 +53,7 @@ public class RealmCache {
         }
     }
 
-    func removeObjectForKey(key: String) {
+    public func removeObjectForKey(key: String) {
         if let cacheObject = realm.objectForPrimaryKey(CacheObject.self, key: key) {
             realm.write { [unowned self] in
                 self.realm.delete(cacheObject)
@@ -61,7 +61,7 @@ public class RealmCache {
         }
     }
 
-    func removeAllObjects() {
+    public func removeAllObjects() {
         realm.write { [unowned self] in
             self.realm.deleteAll()
         }
@@ -78,7 +78,7 @@ public class RealmCache {
         return false
     }
 
-    func pruneExpired() {
+    public func pruneExpired() {
         let results = realm.objects(CacheObject).filter("expiresIn != 0")
         for cacheObject in results {
             if expired(cacheObject) {
