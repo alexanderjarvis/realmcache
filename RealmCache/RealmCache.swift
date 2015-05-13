@@ -21,9 +21,16 @@ public class RealmCache {
         return paths[0]
     }
 
+    private static func migrate(path: String) {
+        setSchemaVersion(1, path) { (migration, oldSchemaVersion) -> Void in
+        }
+    }
+
     public init(name: String = defaultCacheName) {
         self.name = name + ".realm"
-        self.realm = Realm(path: RealmCache.cachesDirectory() + name)
+        let path = RealmCache.cachesDirectory() + name
+        RealmCache.migrate(path)
+        self.realm = Realm(path: path)
     }
 
     deinit {
