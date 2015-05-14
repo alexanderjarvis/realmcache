@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.requires_arc            = true
   s.license                 = 'MIT'
 
-  s.dependency 'RealmSwift', "= 0.92.2"
+  s.dependency 'RealmSwift', "= 0.92.3"
   s.source_files = 'RealmCache/*.swift'
 
   s.ios.deployment_target   = '8.0'
