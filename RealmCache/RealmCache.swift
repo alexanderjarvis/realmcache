@@ -22,7 +22,13 @@ public class RealmCache {
     }
 
     private static func migrate(path: String) {
-        setSchemaVersion(1, path) { (migration, oldSchemaVersion) -> Void in
+        let realmCacheSchemaVersion: UInt = 1
+
+        let defaultRealmSchemaVersion = schemaVersionAtPath(Realm.defaultPath)
+
+        let schemaVersion = defaultRealmSchemaVersion ?? realmCacheSchemaVersion
+
+        setSchemaVersion(schemaVersion, path) { (migration, oldSchemaVersion) -> Void in
         }
     }
 
