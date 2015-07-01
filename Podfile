@@ -3,4 +3,4 @@ platform :ios, '8.0'
 
 use_frameworks!
 
-pod 'RealmSwift', :git => 'https://github.com/realm/realm-cocoa.git', :tag => 'v0.93.1'
+pod 'RealmSwift', '~> 0.93.2'
