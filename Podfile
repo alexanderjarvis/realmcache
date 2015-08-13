@@ -3,4 +3,4 @@ platform :ios, '8.0'
 
 use_frameworks!
 
-pod 'RealmSwift', '~> 0.93.2'
+pod 'RealmSwift', '~> 0.94.1'
