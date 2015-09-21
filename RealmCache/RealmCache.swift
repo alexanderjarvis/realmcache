@@ -17,18 +17,24 @@ public class RealmCache {
     let realm: Realm
 
     private static func cachesDirectory() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true) as! [String]
+        let paths = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)
         return paths[0]
     }
 
     private static func migrate(path: String) {
         let realmCacheSchemaVersion: UInt64 = 1
 
-        let defaultRealmSchemaVersion = schemaVersionAtPath(Realm.defaultPath)
+        let defaultRealmSchemaVersion = schemaVersionAtPath(Realm.Configuration.defaultConfiguration.path ?? "")
 
         let schemaVersion = defaultRealmSchemaVersion ?? realmCacheSchemaVersion
 
-        setSchemaVersion(schemaVersion, path) { (migration, oldSchemaVersion) -> Void in
+        var config = Realm.Configuration.defaultConfiguration
+        config.schemaVersion = schemaVersion
+
+        do {
+            try _ = Realm(configuration: config)
+        } catch {
+
         }
     }
 
@@ -36,7 +42,8 @@ public class RealmCache {
         self.name = name + ".realm"
         let path = RealmCache.cachesDirectory() + name
         RealmCache.migrate(path)
-        self.realm = Realm(path: path)
+        self.realm = try! Realm(path: path)
+
     }
 
     deinit {
@@ -56,7 +63,7 @@ public class RealmCache {
     }
 
     public func setObject(obj: NSSecureCoding, forKey key: String, expiresIn: NSTimeInterval = 0) {
-        realm.write { [unowned self] in
+        let _ = try? realm.write { [unowned self] in
             let cacheObject = CacheObject()
             cacheObject.key = key
             cacheObject.value = NSKeyedArchiver.archivedDataWithRootObject(obj)
@@ -64,23 +71,23 @@ public class RealmCache {
             cacheObject.expiresIn = expiresIn
             self.realm.add(cacheObject, update: true)
         }
-    }
 
-    public func removeObjectForKey(key: String) {
+    }
+    func removeObjectForKey(key: String) {
         if let cacheObject = realm.objectForPrimaryKey(CacheObject.self, key: key) {
-            realm.write { [unowned self] in
+            let _ = try? realm.write { [unowned self] in
                 self.realm.delete(cacheObject)
             }
         }
     }
 
-    public func removeAllObjects() {
-        realm.write { [unowned self] in
+    func removeAllObjects() {
+        let _ = try? realm.write { [unowned self] in
             self.realm.deleteAll()
         }
     }
 
-    private func expired(cacheObject: CacheObject) -> Bool {
+    func expired(cacheObject: CacheObject) -> Bool {
         if cacheObject.expiresIn != 0 {
             let now = NSDate().timeIntervalSince1970
             let expires = cacheObject.created + cacheObject.expiresIn
@@ -91,7 +98,7 @@ public class RealmCache {
         return false
     }
 
-    public func pruneExpired() {
+    func pruneExpired() {
         let results = realm.objects(CacheObject).filter("expiresIn != 0")
         for cacheObject in results {
             if expired(cacheObject) {
@@ -100,17 +107,17 @@ public class RealmCache {
         }
     }
 
-}
 
-class CacheObject: Object {
 
-    dynamic var key: String = ""
-    dynamic var value: NSData = NSData()
-    dynamic var created: NSTimeInterval = 0
-    dynamic var expiresIn: NSTimeInterval = 0
+    class CacheObject: Object {
 
-    static override func primaryKey() -> String? {
-        return "key"
+        dynamic var key: String = ""
+        dynamic var value: NSData = NSData()
+        dynamic var created: NSTimeInterval = 0
+        dynamic var expiresIn: NSTimeInterval = 0
+        
+        static override func primaryKey() -> String? {
+            return "key"
+        }
     }
-
 }
