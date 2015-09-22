@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                    = "RealmCache"
-  s.version                 = "0.1.1"
+  s.version                 = "0.2.0"
   s.summary                 = "RealmCache is like NSCache but persistent and built with Realm"
   s.description             = <<-DESC
                               RealmCache is like NSCache but persistent and built with Realm
