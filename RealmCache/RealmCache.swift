@@ -106,18 +106,16 @@ public class RealmCache {
             }
         }
     }
+}
 
+class CacheObject: Object {
 
+    dynamic var key: String = ""
+    dynamic var value: NSData = NSData()
+    dynamic var created: NSTimeInterval = 0
+    dynamic var expiresIn: NSTimeInterval = 0
 
-    class CacheObject: Object {
-
-        dynamic var key: String = ""
-        dynamic var value: NSData = NSData()
-        dynamic var created: NSTimeInterval = 0
-        dynamic var expiresIn: NSTimeInterval = 0
-        
-        static override func primaryKey() -> String? {
-            return "key"
-        }
+    static override func primaryKey() -> String? {
+        return "key"
     }
 }
