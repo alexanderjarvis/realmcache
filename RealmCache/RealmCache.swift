@@ -21,29 +21,12 @@ public class RealmCache {
         return paths[0]
     }
 
-    private static func migrate(path: String) {
-        let realmCacheSchemaVersion: UInt64 = 1
-
-        let defaultRealmSchemaVersion = schemaVersionAtPath(Realm.Configuration.defaultConfiguration.path ?? "")
-
-        let schemaVersion = defaultRealmSchemaVersion ?? realmCacheSchemaVersion
-
-        var config = Realm.Configuration.defaultConfiguration
-        config.schemaVersion = schemaVersion
-
-        do {
-            try _ = Realm(configuration: config)
-        } catch {
-
-        }
-    }
-
     public init(name: String = defaultCacheName) {
         self.name = name + ".realm"
         let path = RealmCache.cachesDirectory() + name
-        RealmCache.migrate(path)
-        self.realm = try! Realm(path: path)
-
+        let realmCacheSchemaVersion: UInt64 = 2
+        let config = Realm.Configuration(path: path, schemaVersion: realmCacheSchemaVersion, objectTypes: [CacheObject.self])
+        self.realm = try! Realm(configuration: config)
     }
 
     deinit {
