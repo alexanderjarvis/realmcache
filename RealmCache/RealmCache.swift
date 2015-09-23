@@ -101,4 +101,8 @@ class CacheObject: Object {
     static override func primaryKey() -> String? {
         return "key"
     }
+
+    static func requiredProperties() -> [String]? {
+        return nil
+    }
 }
