@@ -25,7 +25,12 @@ public class RealmCache {
         self.name = name + ".realm"
         let path = RealmCache.cachesDirectory() + name
         let realmCacheSchemaVersion: UInt64 = 2
-        let config = Realm.Configuration(path: path, schemaVersion: realmCacheSchemaVersion, objectTypes: [CacheObject.self])
+        let schemaVersion = Realm.Configuration.defaultConfiguration.schemaVersion ?? realmCacheSchemaVersion
+
+        let migrationBlock: MigrationBlock = { migration, oldSchemaVersion in
+        }
+
+        let config = Realm.Configuration(path: path, schemaVersion: schemaVersion, migrationBlock: migrationBlock, objectTypes: [CacheObject.self])
         self.realm = try! Realm(configuration: config)
     }
 
