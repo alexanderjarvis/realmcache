@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB768A750EE48F0CAF94C4D5 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205F08C186FB65812261A046 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		CB768A750EE48F0CAF94C4D5 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 205F08C186FB65812261A046 /* Pods.framework */; };
 		FAF88EE31AFFA9A3006B7B8B /* RealmCache.h in Headers */ = {isa = PBXBuildFile; fileRef = FAF88EE21AFFA9A3006B7B8B /* RealmCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FAF88EE91AFFA9A3006B7B8B /* RealmCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAF88EDD1AFFA9A3006B7B8B /* RealmCache.framework */; };
 		FAF88EF01AFFA9A3006B7B8B /* RealmCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF88EEF1AFFA9A3006B7B8B /* RealmCacheTests.swift */; };

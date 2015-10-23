@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                    = "RealmCache"
-  s.version                 = "0.2.0"
+  s.version                 = "0.2.1"
   s.summary                 = "RealmCache is like NSCache but persistent and built with Realm"
   s.description             = <<-DESC
                               RealmCache is like NSCache but persistent and built with Realm
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.requires_arc            = true
   s.license                 = 'MIT'
 
-  s.dependency 'RealmSwift', '~> 0.95.0'
+  s.dependency 'RealmSwift'
   s.source_files = 'RealmCache/*.swift'
 
   s.ios.deployment_target   = '8.0'
